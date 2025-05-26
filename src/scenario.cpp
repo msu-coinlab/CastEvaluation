@@ -320,7 +320,7 @@ void Scenario::create_scenario(size_t scenario_id, const std::string& filename, 
 
         auto key_animal = fmt::format("{}_{}", base_condition, county);
         //check if key_animal is in data_reader.get_animal_idx
-        fmt::print("Key animal: {}\n", key_animal);
+        fmt::print("Key animal (base_condition, county): {}\n", key_animal);
         if (data_reader.is_animal_in_idx(key_animal)) {
             for (const auto &key: data_reader.get_animal_idx(key_animal)) {
                 animal_[key]=data_reader.get_animal(key);
@@ -331,7 +331,7 @@ void Scenario::create_scenario(size_t scenario_id, const std::string& filename, 
             }
         }
         else {
-            fmt::print("Key animal not found: {}\n", key_animal);
+            fmt::print("Key animal not found (base_condition, county): {}\n", key_animal);
         }
     }
     
