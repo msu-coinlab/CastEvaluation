@@ -45,16 +45,6 @@ void DataReader::read_scenario() {
     int counter = 0;
 
     auto filename = fmt::format("{}/TblScenario.csv", csvs_path);
-    auto historical_crop_need_scenario_filename = fmt::format("{}/CoreCast_HistoricalCropNeedScenarioId_Lookup.csv", csvs_path);
-    csv::CSVReader reader3(historical_crop_need_scenario_filename);
-    // read the entire file into a map
-    // there are three columns in the file: SourceDaraRevisionId, BaseConditionId, HistoricalCropNeedScenarioId
-    // I want to create a map of SourceDaraRevisionId and BaseConditionId to HistoricalCropNeedScenarioId
-    std::unordered_map<std::string, int> historical_crop_need_scenario_map;
-    for(auto& row: reader3) {
-        auto key = fmt::format("{}_{}", row["SourceDaraRevisionId"], row["BaseConditionId"]);
-        historical_crop_need_scenario_map[key] = row["HistoricalCropNeedScenarioId"].get<int>();
-    }
 
     csv::CSVReader reader2(filename);
     for(auto& row: reader2) {
@@ -75,13 +65,11 @@ void DataReader::read_scenario() {
             scenario_data["BaseLoadId"] = row["BaseLoadId"].get<int>();
             scenario_data["CostProfileId"] = row["CostProfileId"].get<int>();
             scenario_data["ClimateChangeDataSetId"] = row["ClimateChangeDataSetId"].get<int>();
+            scenario_data["HistoricalCropNeedScenario"]= 6608;
             scenario_data["PointSourceDataSetId"] = row["PointSourceDataSetId"].get<int>();
             scenario_data["ScenarioTypeId"] = row["ScenarioTypeId"].get<int>();
             scenario_data["SoilPDataSetId"] = row["SoilPDataSetId"].get<int>();
             scenario_data["SourceDataRevisionId"]= row["SourceDataRevisionId"].get<int>();
-            // We need to get the historical crop need scenario id from the historical_crop_need_scenario_map
-            auto key = fmt::format("{}_{}", row["SourceDataRevisionId"], row["BaseConditionId"]);
-            scenario_data["HistoricalCropNeedScenario"] = historical_crop_need_scenario_map[key];
             scenario_data_[ScenarioId] = scenario_data.dump();
 
             std::string scenario_name = "empty";
@@ -91,7 +79,7 @@ void DataReader::read_scenario() {
             int base_load= row["BaseLoadId"].get<int>();
             int cost_profile= row["CostProfileId"].get<int>();
             int climate_change_data_set= row["ClimateChangeDataSetId"].get<int>();
-            int historical_crop_need_scenario= historical_crop_need_scenario_map[key];;
+            int historical_crop_need_scenario= 6608;
             int point_source_data_set= row["PointSourceDataSetId"].get<int>();
             int scenario_type= row["ScenarioTypeId"].get<int>();
             int soil_p_data_set= row["SoilPDataSetId"].get<int>();
@@ -527,4 +515,3 @@ double DataReader::get_bmp_cost(int profile, int bmp) const {
     }
     return -1;
 }
-
