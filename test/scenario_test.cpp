@@ -38,5 +38,3 @@ int main(int argc, char** argv) {
     scenario2.save("test2.json");
     */
 }
-
-git fetch --all
